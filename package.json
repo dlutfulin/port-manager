@@ -1,0 +1,49 @@
+{
+  "name": "lutfulin-port-manager",
+  "version": "1.0.0",
+  "description": "macOS menubar app для управления локальными портами",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "dist": "electron-builder --mac"
+  },
+  "keywords": ["menubar", "ports", "macos"],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.4"
+  },
+  "dependencies": {
+    "menubar": "^9.3.0"
+  },
+  "build": {
+    "appId": "com.yourname.portmanager",
+    "productName": "Port Manager",
+    "directories": {
+      "output": "dist"
+    },
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "icon": "assets/icon.icns",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["universal"]
+        },
+        {
+          "target": "zip",
+          "arch": ["universal"]
+        }
+      ],
+      "extendInfo": {
+        "LSUIElement": 1
+      },
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "entitlements": null,
+      "entitlementsInherit": null
+    }
+  }
+}

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lutfulin Port Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            user-select: none;
+            overflow-x: hidden;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .title .icon {
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .ports-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .ports-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .ports-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .ports-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .port-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .port-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+        }
+
+        .port-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .port-number {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffd700;
+        }
+
+        .process-name {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .pid {
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        .kill-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+        }
+
+        .kill-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
+        }
+
+        .kill-btn:active {
+            transform: scale(0.98);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            opacity: 0.8;
+        }
+
+        .empty-state .emoji {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .empty-state .message {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .status {
+            position: fixed;
+            bottom: 15px;
+            left: 15px;
+            right: 15px;
+            background: rgba(76, 175, 80, 0.9);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 12px;
+            transform: translateY(100px);
+            transition: transform 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .status.show {
+            transform: translateY(0);
+        }
+
+        .status.error {
+            background: rgba(244, 67, 54, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="title">
+            <span class="icon">🚀</span>
+           Lutfulin Port Manager
+        </div>
+        <div class="controls">
+            <button class="btn" onclick="refreshPorts()">🔄 Обновить</button>
+            <button class="btn" onclick="quitApp()">✕ Выход</button>
+        </div>
+    </div>
+
+    <div id="content">
+        <div class="loading">
+            <div class="spinner"></div>
+            <div>Загрузка портов...</div>
+        </div>
+    </div>
+
+    <div id="status" class="status"></div>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+
+        let ports = [];
+
+        async function loadPorts() {
+            try {
+                const contentDiv = document.getElementById('content');
+                contentDiv.innerHTML = `
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <div>Загрузка портов...</div>
+                    </div>
+                `;
+
+                ports = await ipcRenderer.invoke('get-ports');
+                renderPorts();
+            } catch (error) {
+                console.error('Error loading ports:', error);
+                showStatus('Ошибка при загрузке портов', true);
+            }
+        }
+
+        function renderPorts() {
+            const contentDiv = document.getElementById('content');
+            
+            if (ports.length === 0) {
+                contentDiv.innerHTML = `
+                    <div class="empty-state">
+                        <div class="emoji">🎉</div>
+                        <div class="message">
+                            Нет активных локальных серверов<br>
+                            Все порты свободны!
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            const portsHtml = ports.map(port => `
+                <div class="port-item" data-pid="${port.pid}">
+                    <div class="port-info">
+                        <div class="port-number">${port.address}</div>
+                        <div class="process-name">${port.process}</div>
+                        <div class="pid">PID: ${port.pid}</div>
+                    </div>
+                    <button class="kill-btn" onclick="killPort('${port.pid}', '${port.port}')">
+                        Завершить
+                    </button>
+                </div>
+            `).join('');
+
+            contentDiv.innerHTML = `<div class="ports-container">${portsHtml}</div>`;
+        }
+
+        async function killPort(pid, port) {
+            if (!confirm(`Вы уверены, что хотите завершить процесс на порту ${port}?`)) {
+                return;
+            }
+
+            try {
+                const result = await ipcRenderer.invoke('kill-process', pid);
+                
+                if (result.success) {
+                    showStatus(`Процесс на порту ${port} успешно завершен`);
+                    
+                    // Анимация удаления
+                    const item = document.querySelector(`[data-pid="${pid}"]`);
+                    if (item) {
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateX(-100%)';
+                        setTimeout(() => {
+                            loadPorts();
+                        }, 300);
+                    }
+                } else {
+                    showStatus(`Ошибка при завершении процесса: ${result.error}`, true);
+                }
+            } catch (error) {
+                console.error('Error killing process:', error);
+                showStatus('Ошибка при завершении процесса', true);
+            }
+        }
+
+        function refreshPorts() {
+            loadPorts();
+            showStatus('Список портов обновлен');
+        }
+
+        function showStatus(message, isError = false) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status show ${isError ? 'error' : ''}`;
+            
+            setTimeout(() => {
+                statusDiv.classList.remove('show');
+            }, 3000);
+        }
+
+        function quitApp() {
+            if (confirm('Вы уверены, что хотите выйти из Port Manager?')) {
+                ipcRenderer.send('quit-app');
+            }
+        }
+
+        // Загружаем порты при старте
+        loadPorts();
+
+        // Обновляем при получении сигнала от main процесса
+        ipcRenderer.on('refresh-ports', () => {
+            loadPorts();
+        });
+
+        // Автообновление каждые 10 секунд
+        setInterval(() => {
+            loadPorts();
+        }, 10000);
+    </script>
+</body>
+</html>
