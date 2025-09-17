@@ -1,7 +1,7 @@
 {
   "name": "lutfulin-port-manager",
-  "version": "1.0.0",
-  "description": "macOS menubar app для управления локальными портами",
+  "version": "1.0.1",
+  "description": "macOS menubar app",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -9,7 +9,7 @@
     "dist": "electron-builder --mac"
   },
   "keywords": ["menubar", "ports", "macos"],
-  "author": "Your Name",
+  "author": "Dmytro Lutfulin",
   "license": "MIT",
   "devDependencies": {
     "electron": "^27.0.0",

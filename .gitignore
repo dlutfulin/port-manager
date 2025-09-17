@@ -1,0 +1,5 @@
+# Xcode / macOS build
+*.app
+*.dmg
+node_modules/
+dist/
