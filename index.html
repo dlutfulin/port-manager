@@ -13,24 +13,26 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-image: url('./image.png');
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 15px;
             user-select: none;
-            overflow-x: hidden;
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -50,19 +52,20 @@
 
         .controls {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
         .btn {
             background: rgba(255, 255, 255, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.3);
             color: white;
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
+            white-space: nowrap;
         }
 
         .btn:hover {
@@ -74,13 +77,83 @@
             transform: translateY(0);
         }
 
+        .search-container {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 35px 10px 12px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-clear {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 5px;
+            transition: color 0.3s ease;
+        }
+
+        .search-clear:hover {
+            color: white;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-size: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #ffd700;
+        }
+
         .ports-container {
-            max-height: 400px;
+            max-height: 320px;
             overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 5px;
         }
 
         .ports-container::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
 
         .ports-container::-webkit-scrollbar-track {
@@ -93,18 +166,23 @@
             border-radius: 10px;
         }
 
+        .ports-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
         .port-item {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 10px;
+            padding: 10px;
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             transition: all 0.3s ease;
             animation: slideIn 0.3s ease;
+            cursor: pointer;
         }
 
         @keyframes slideIn {
@@ -120,47 +198,104 @@
 
         .port-item:hover {
             background: rgba(255, 255, 255, 0.15);
-            transform: translateX(5px);
+            transform: translateX(3px);
+        }
+
+        .port-item.removing {
+            animation: slideOut 0.3s ease forwards;
+        }
+
+        @keyframes slideOut {
+            to {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
         }
 
         .port-info {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
+            flex: 1;
         }
 
         .port-number {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             color: #ffd700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .port-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 500;
         }
 
         .process-name {
-            font-size: 12px;
+            font-size: 11px;
             opacity: 0.9;
         }
 
         .pid {
-            font-size: 11px;
+            font-size: 10px;
             opacity: 0.7;
+        }
+
+        .port-actions {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .action-btn.copy:hover {
+            background: rgba(76, 175, 80, 0.5);
+        }
+
+        .action-btn.open:hover {
+            background: rgba(33, 150, 243, 0.5);
         }
 
         .kill-btn {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             border: none;
             color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            border-radius: 15px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+            box-shadow: 0 2px 8px rgba(245, 87, 108, 0.3);
         }
 
         .kill-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
+            box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
         }
 
         .kill-btn:active {
@@ -204,18 +339,19 @@
 
         .status {
             position: fixed;
-            bottom: 15px;
-            left: 15px;
-            right: 15px;
-            background: rgba(76, 175, 80, 0.9);
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            background: rgba(76, 175, 80, 0.95);
             color: white;
-            padding: 10px;
-            border-radius: 8px;
+            padding: 8px;
+            border-radius: 6px;
             text-align: center;
-            font-size: 12px;
+            font-size: 11px;
             transform: translateY(100px);
             transition: transform 0.3s ease;
             backdrop-filter: blur(10px);
+            z-index: 1000;
         }
 
         .status.show {
@@ -223,7 +359,37 @@
         }
 
         .status.error {
-            background: rgba(244, 67, 54, 0.9);
+            background: rgba(244, 67, 54, 0.95);
+        }
+
+        .status.info {
+            background: rgba(33, 150, 243, 0.95);
+        }
+
+        .shortcut-hint {
+            position: absolute;
+            bottom: 5px;
+            right: 15px;
+            font-size: 9px;
+            opacity: 0.5;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 5px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            pointer-events: none;
+            z-index: 2000;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tooltip.show {
+            opacity: 1;
         }
     </style>
 </head>
@@ -231,11 +397,32 @@
     <div class="header">
         <div class="title">
             <span class="icon">🚀</span>
-           Lutfulin Port Manager
+            Lutfulin Port Manager
         </div>
         <div class="controls">
-            <button class="btn" onclick="refreshPorts()">🔄 Обновить</button>
-            <button class="btn" onclick="quitApp()">✕ Выход</button>
+            <button class="btn" onclick="refreshPorts()" title="Обновить список">🔄</button>
+            <button class="btn" onclick="toggleAutoRefresh()" id="autoRefreshBtn" title="Автообновление">⏸</button>
+            <button class="btn" onclick="quitApp()" title="Выход">✕</button>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <input type="text" 
+               class="search-input" 
+               id="searchInput" 
+               placeholder="Поиск по порту или процессу..."
+               oninput="filterPorts()">
+        <button class="search-clear" onclick="clearSearch()" id="searchClear" style="display: none;">✕</button>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <span>Активных портов:</span>
+            <span class="stat-value" id="activeCount">0</span>
+        </div>
+        <div class="stat-item">
+            <span>Обновлено:</span>
+            <span class="stat-value" id="lastUpdate">--:--</span>
         </div>
     </div>
 
@@ -247,64 +434,124 @@
     </div>
 
     <div id="status" class="status"></div>
+    <div class="shortcut-hint">⌘⇧P</div>
+    <div id="tooltip" class="tooltip"></div>
 
     <script>
         const { ipcRenderer } = require('electron');
 
         let ports = [];
+        let filteredPorts = [];
+        let autoRefresh = true;
+        let autoRefreshInterval = null;
 
         async function loadPorts() {
             try {
-                const contentDiv = document.getElementById('content');
-                contentDiv.innerHTML = `
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        <div>Загрузка портов...</div>
-                    </div>
-                `;
-
                 ports = await ipcRenderer.invoke('get-ports');
-                renderPorts();
+                filterPorts(); // Применяем фильтр
+                updateStats();
             } catch (error) {
                 console.error('Error loading ports:', error);
-                showStatus('Ошибка при загрузке портов', true);
+                showStatus('Ошибка при загрузке портов', 'error');
             }
+        }
+
+        function updateStats() {
+            document.getElementById('activeCount').textContent = ports.length;
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = 
+                `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+        }
+
+        function filterPorts() {
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+            const clearBtn = document.getElementById('searchClear');
+            
+            if (searchValue) {
+                clearBtn.style.display = 'block';
+                filteredPorts = ports.filter(port => 
+                    port.port.includes(searchValue) ||
+                    port.process.toLowerCase().includes(searchValue) ||
+                    port.pid.includes(searchValue)
+                );
+            } else {
+                clearBtn.style.display = 'none';
+                filteredPorts = ports;
+            }
+            
+            renderPorts();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            filterPorts();
         }
 
         function renderPorts() {
             const contentDiv = document.getElementById('content');
             
-            if (ports.length === 0) {
-                contentDiv.innerHTML = `
-                    <div class="empty-state">
-                        <div class="emoji">🎉</div>
-                        <div class="message">
-                            Нет активных локальных серверов<br>
-                            Все порты свободны!
+            if (filteredPorts.length === 0) {
+                if (ports.length === 0) {
+                    contentDiv.innerHTML = `
+                        <div class="empty-state">
+                            <div class="emoji">🎉</div>
+                            <div class="message">
+                                Нет активных локальных серверов<br>
+                                Все порты свободны!
+                            </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                } else {
+                    contentDiv.innerHTML = `
+                        <div class="empty-state">
+                            <div class="emoji">🔍</div>
+                            <div class="message">
+                                Ничего не найдено<br>
+                                Попробуйте изменить запрос
+                            </div>
+                        </div>
+                    `;
+                }
                 return;
             }
 
-            const portsHtml = ports.map(port => `
-                <div class="port-item" data-pid="${port.pid}">
-                    <div class="port-info">
-                        <div class="port-number">${port.address}</div>
-                        <div class="process-name">${port.process}</div>
-                        <div class="pid">PID: ${port.pid}</div>
+            const portsHtml = filteredPorts.map(port => {
+                const isCommon = ['3000', '3001', '8080', '8000', '5000', '4200'].includes(port.port);
+                return `
+                    <div class="port-item" data-pid="${port.pid}">
+                        <div class="port-info" onclick="copyPort('${port.port}')">
+                            <div class="port-number">
+                                ${port.address}
+                                ${isCommon ? '<span class="port-badge">Common</span>' : ''}
+                            </div>
+                            <div class="process-name">${port.process}</div>
+                            <div class="pid">PID: ${port.pid}</div>
+                        </div>
+                        <div class="port-actions">
+                            <button class="action-btn copy" 
+                                    onclick="copyPort('${port.port}')" 
+                                    title="Копировать адрес">
+                                📋
+                            </button>
+                            <button class="action-btn open" 
+                                    onclick="openInBrowser('${port.port}')" 
+                                    title="Открыть в браузере">
+                                🌐
+                            </button>
+                            <button class="kill-btn" 
+                                    onclick="killPort('${port.pid}', '${port.port}')">
+                                Завершить
+                            </button>
+                        </div>
                     </div>
-                    <button class="kill-btn" onclick="killPort('${port.pid}', '${port.port}')">
-                        Завершить
-                    </button>
-                </div>
-            `).join('');
+                `;
+            }).join('');
 
             contentDiv.innerHTML = `<div class="ports-container">${portsHtml}</div>`;
         }
 
         async function killPort(pid, port) {
-            if (!confirm(`Вы уверены, что хотите завершить процесс на порту ${port}?`)) {
+            if (!confirm(`Завершить процесс на порту ${port}?`)) {
                 return;
             }
 
