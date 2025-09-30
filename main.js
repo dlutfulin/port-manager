@@ -262,6 +262,13 @@ app.on('window-all-closed', () => {
   }
 });
 
+ipcMain.on('hide-window', () => {
+  if (mb.window && mb.window.isVisible()) {
+    mb.hideWindow();
+  }
+});
+
+
 // Очищаем горячие клавиши при выходе
 app.on('will-quit', () => {
   globalShortcut.unregisterAll();

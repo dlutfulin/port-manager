@@ -1,436 +1,457 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lutfulin Port Manager</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px;
-            user-select: none;
-            overflow: hidden;
-            width: 100%;
-            max-width: 400px;
-        }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px;
+        user-select: none;
+        overflow: hidden;
+        width: 100%;
+        max-width: 400px;
+      }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      }
 
-        .title {
-            font-size: 16px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+      .title {
+        font-size: 16px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
 
-        .title .icon {
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-        }
+      .title .icon {
+        width: 20px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+      }
 
-        .controls {
-            display: flex;
-            gap: 8px;
-        }
+      .controls {
+        display: flex;
+        gap: 8px;
+      }
 
-        .btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 11px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            white-space: nowrap;
-        }
+      .btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 11px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        white-space: nowrap;
+      }
 
-        .btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-1px);
-        }
+      .btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-1px);
+      }
 
-        .btn:active {
-            transform: translateY(0);
-        }
+      .btn:active {
+        transform: translateY(0);
+      }
 
-        .search-container {
-            margin-bottom: 15px;
-            position: relative;
-        }
+      .search-container {
+        margin-bottom: 15px;
+        position: relative;
+      }
 
-        .search-input {
-            width: 100%;
-            padding: 10px 35px 10px 12px;
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            color: white;
-            font-size: 13px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
+      .search-input {
+        width: 100%;
+        padding: 10px 35px 10px 12px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        color: white;
+        font-size: 13px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+      }
 
-        .search-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
+      .search-input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+      }
 
-        .search-input:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
+      .search-input:focus {
+        outline: none;
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.5);
+      }
 
-        .search-clear {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.7);
-            cursor: pointer;
-            font-size: 16px;
-            padding: 5px;
-            transition: color 0.3s ease;
-        }
+      .search-clear {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+        font-size: 16px;
+        padding: 5px;
+        transition: color 0.3s ease;
+      }
 
-        .search-clear:hover {
-            color: white;
-        }
+      .search-clear:hover {
+        color: white;
+      }
 
-        .stats-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 8px 12px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            font-size: 12px;
-            backdrop-filter: blur(10px);
-        }
+      .stats-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 8px 12px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        font-size: 12px;
+        backdrop-filter: blur(10px);
+      }
 
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
+      .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
 
-        .stat-value {
-            font-weight: 600;
-            color: #ffd700;
-        }
+      .stat-value {
+        font-weight: 600;
+        color: #ffd700;
+      }
 
-        .ports-container {
-            max-height: 320px;
-            overflow-y: auto;
-            overflow-x: hidden;
-            padding-right: 5px;
-        }
+      .ports-container {
+        max-height: 320px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: 5px;
+      }
 
-        .ports-container::-webkit-scrollbar {
-            width: 6px;
-        }
+      .ports-container::-webkit-scrollbar {
+        width: 6px;
+      }
 
-        .ports-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
+      .ports-container::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+      }
 
-        .ports-container::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-        }
+      .ports-container::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+      }
 
-        .ports-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.4);
-        }
+      .ports-container::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.4);
+      }
 
-        .port-item {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
-            animation: slideIn 0.3s ease;
-            cursor: pointer;
-        }
+      .port-item {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+        animation: slideIn 0.3s ease;
+        cursor: pointer;
+      }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
         }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
 
-        .port-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateX(3px);
-        }
+      .port-item:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateX(3px);
+      }
 
-        .port-item.removing {
-            animation: slideOut 0.3s ease forwards;
-        }
+      .port-item.removing {
+        animation: slideOut 0.3s ease forwards;
+      }
 
-        @keyframes slideOut {
-            to {
-                opacity: 0;
-                transform: translateX(-100%);
-            }
+      @keyframes slideOut {
+        to {
+          opacity: 0;
+          transform: translateX(-100%);
         }
+      }
 
-        .port-info {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-            flex: 1;
-        }
+      .port-info {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        flex: 1;
+      }
 
-        .port-number {
-            font-size: 14px;
-            font-weight: 600;
-            color: #ffd700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+      .port-number {
+        font-size: 14px;
+        font-weight: 600;
+        color: #ffd700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
 
-        .port-badge {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 500;
-        }
+      .port-badge {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 10px;
+        font-weight: 500;
+      }
 
-        .process-name {
-            font-size: 11px;
-            opacity: 0.9;
-        }
+      .process-name {
+        font-size: 11px;
+        opacity: 0.9;
+      }
 
-        .pid {
-            font-size: 10px;
-            opacity: 0.7;
-        }
+      .pid {
+        font-size: 10px;
+        opacity: 0.7;
+      }
 
-        .port-actions {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-        }
+      .port-actions {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
 
-        .action-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+      .action-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-        .action-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
+      .action-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.1);
+      }
 
-        .action-btn.copy:hover {
-            background: rgba(76, 175, 80, 0.5);
-        }
+      .action-btn.copy:hover {
+        background: rgba(76, 175, 80, 0.5);
+      }
 
-        .action-btn.open:hover {
-            background: rgba(33, 150, 243, 0.5);
-        }
+      .action-btn.open:hover {
+        background: rgba(33, 150, 243, 0.5);
+      }
 
-        .kill-btn {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            border: none;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(245, 87, 108, 0.3);
-        }
+      .kill-btn {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        border: none;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 15px;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(245, 87, 108, 0.3);
+      }
 
-        .kill-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
-        }
+      .kill-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
+      }
 
-        .kill-btn:active {
-            transform: scale(0.98);
-        }
+      .kill-btn:active {
+        transform: scale(0.98);
+      }
 
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            opacity: 0.8;
-        }
+      .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        opacity: 0.8;
+      }
 
-        .empty-state .emoji {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
+      .empty-state .emoji {
+        font-size: 48px;
+        margin-bottom: 15px;
+      }
 
-        .empty-state .message {
-            font-size: 14px;
-            line-height: 1.5;
-        }
+      .empty-state .message {
+        font-size: 14px;
+        line-height: 1.5;
+      }
 
-        .loading {
-            text-align: center;
-            padding: 40px;
-        }
+      .loading {
+        text-align: center;
+        padding: 40px;
+      }
 
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 15px;
+      }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
         }
+      }
 
-        .status {
-            position: fixed;
-            bottom: 10px;
-            left: 10px;
-            right: 10px;
-            background: rgba(76, 175, 80, 0.95);
-            color: white;
-            padding: 8px;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 11px;
-            transform: translateY(100px);
-            transition: transform 0.3s ease;
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-        }
+      .status {
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        background: rgba(76, 175, 80, 0.95);
+        color: white;
+        padding: 8px;
+        border-radius: 6px;
+        text-align: center;
+        font-size: 11px;
+        transform: translateY(100px);
+        transition: transform 0.3s ease;
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+      }
 
-        .status.show {
-            transform: translateY(0);
-        }
+      .status.show {
+        transform: translateY(0);
+      }
 
-        .status.error {
-            background: rgba(244, 67, 54, 0.95);
-        }
+      .status.error {
+        background: rgba(244, 67, 54, 0.95);
+      }
 
-        .status.info {
-            background: rgba(33, 150, 243, 0.95);
-        }
+      .status.info {
+        background: rgba(33, 150, 243, 0.95);
+      }
 
-        .shortcut-hint {
-            position: absolute;
-            bottom: 5px;
-            right: 15px;
-            font-size: 9px;
-            opacity: 0.5;
-        }
+      .shortcut-hint {
+        position: absolute;
+        bottom: 5px;
+        right: 15px;
+        font-size: 9px;
+        opacity: 0.5;
+      }
 
-        .tooltip {
-            position: absolute;
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 5px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            pointer-events: none;
-            z-index: 2000;
-            white-space: nowrap;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+      .tooltip {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 5px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        pointer-events: none;
+        z-index: 2000;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
 
-        .tooltip.show {
-            opacity: 1;
-        }
+      .tooltip.show {
+        opacity: 1;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="header">
-        <div class="title">
-            <span class="icon">🚀</span>
-            Lutfulin Port Manager
-        </div>
-        <div class="controls">
-            <button class="btn" onclick="refreshPorts()" title="Обновить список">🔄</button>
-            <button class="btn" onclick="toggleAutoRefresh()" id="autoRefreshBtn" title="Автообновление">⏸</button>
-            <button class="btn" onclick="quitApp()" title="Выход">✕</button>
-        </div>
+      <div class="title">
+        <span class="icon">🚀</span>
+        Lutfulin Port Manager
+      </div>
+      <div class="controls">
+        <button class="btn" onclick="refreshPorts()" title="Обновить список">
+          🔄
+        </button>
+        <button
+          class="btn"
+          onclick="toggleAutoRefresh()"
+          id="autoRefreshBtn"
+          title="Автообновление"
+        >
+          ⏸
+        </button>
+        <button class="btn" onclick="quitApp()" title="Выход">✕</button>
+      </div>
     </div>
 
     <div class="search-container">
-        <input type="text" 
-               class="search-input" 
-               id="searchInput" 
-               placeholder="Поиск по порту или процессу..."
-               oninput="filterPorts()">
-        <button class="search-clear" onclick="clearSearch()" id="searchClear" style="display: none;">✕</button>
+      <input
+        type="text"
+        class="search-input"
+        id="searchInput"
+        placeholder="Поиск по порту или процессу..."
+        oninput="filterPorts()"
+      />
+      <button
+        class="search-clear"
+        onclick="clearSearch()"
+        id="searchClear"
+        style="display: none"
+      >
+        ✕
+      </button>
     </div>
 
     <div class="stats-bar">
-        <div class="stat-item">
-            <span>Активных портов:</span>
-            <span class="stat-value" id="activeCount">0</span>
-        </div>
-        <div class="stat-item">
-            <span>Обновлено:</span>
-            <span class="stat-value" id="lastUpdate">--:--</span>
-        </div>
+      <div class="stat-item">
+        <span>Активных портов:</span>
+        <span class="stat-value" id="activeCount">0</span>
+      </div>
+      <div class="stat-item">
+        <span>Обновлено:</span>
+        <span class="stat-value" id="lastUpdate">--:--</span>
+      </div>
     </div>
 
     <div id="content">
-        <div class="loading">
-            <div class="spinner"></div>
-            <div>Загрузка портов...</div>
-        </div>
+      <div class="loading">
+        <div class="spinner"></div>
+        <div>Загрузка портов...</div>
+      </div>
     </div>
 
     <div id="status" class="status"></div>
@@ -438,61 +459,66 @@
     <div id="tooltip" class="tooltip"></div>
 
     <script>
-        const { ipcRenderer } = require('electron');
+      const { ipcRenderer } = require("electron");
 
-        let ports = [];
-        let filteredPorts = [];
-        let autoRefresh = true;
-        let autoRefreshInterval = null;
+      let ports = [];
+      let filteredPorts = [];
+      let autoRefresh = true;
+      let autoRefreshInterval = null;
 
-        async function loadPorts() {
-            try {
-                ports = await ipcRenderer.invoke('get-ports');
-                filterPorts(); // Применяем фильтр
-                updateStats();
-            } catch (error) {
-                console.error('Error loading ports:', error);
-                showStatus('Ошибка при загрузке портов', 'error');
-            }
+      async function loadPorts() {
+        try {
+          ports = await ipcRenderer.invoke("get-ports");
+          filterPorts(); // Применяем фильтр
+          updateStats();
+        } catch (error) {
+          console.error("Error loading ports:", error);
+          showStatus("Ошибка при загрузке портов", "error");
+        }
+      }
+
+      function updateStats() {
+        document.getElementById("activeCount").textContent = ports.length;
+        const now = new Date();
+        document.getElementById("lastUpdate").textContent = `${now
+          .getHours()
+          .toString()
+          .padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
+      }
+
+      function filterPorts() {
+        const searchValue = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const clearBtn = document.getElementById("searchClear");
+
+        if (searchValue) {
+          clearBtn.style.display = "block";
+          filteredPorts = ports.filter(
+            (port) =>
+              port.port.includes(searchValue) ||
+              port.process.toLowerCase().includes(searchValue) ||
+              port.pid.includes(searchValue)
+          );
+        } else {
+          clearBtn.style.display = "none";
+          filteredPorts = ports;
         }
 
-        function updateStats() {
-            document.getElementById('activeCount').textContent = ports.length;
-            const now = new Date();
-            document.getElementById('lastUpdate').textContent = 
-                `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-        }
+        renderPorts();
+      }
 
-        function filterPorts() {
-            const searchValue = document.getElementById('searchInput').value.toLowerCase();
-            const clearBtn = document.getElementById('searchClear');
-            
-            if (searchValue) {
-                clearBtn.style.display = 'block';
-                filteredPorts = ports.filter(port => 
-                    port.port.includes(searchValue) ||
-                    port.process.toLowerCase().includes(searchValue) ||
-                    port.pid.includes(searchValue)
-                );
-            } else {
-                clearBtn.style.display = 'none';
-                filteredPorts = ports;
-            }
-            
-            renderPorts();
-        }
+      function clearSearch() {
+        document.getElementById("searchInput").value = "";
+        filterPorts();
+      }
 
-        function clearSearch() {
-            document.getElementById('searchInput').value = '';
-            filterPorts();
-        }
+      function renderPorts() {
+        const contentDiv = document.getElementById("content");
 
-        function renderPorts() {
-            const contentDiv = document.getElementById('content');
-            
-            if (filteredPorts.length === 0) {
-                if (ports.length === 0) {
-                    contentDiv.innerHTML = `
+        if (filteredPorts.length === 0) {
+          if (ports.length === 0) {
+            contentDiv.innerHTML = `
                         <div class="empty-state">
                             <div class="emoji">🎉</div>
                             <div class="message">
@@ -501,8 +527,8 @@
                             </div>
                         </div>
                     `;
-                } else {
-                    contentDiv.innerHTML = `
+          } else {
+            contentDiv.innerHTML = `
                         <div class="empty-state">
                             <div class="emoji">🔍</div>
                             <div class="message">
@@ -511,18 +537,32 @@
                             </div>
                         </div>
                     `;
-                }
-                return;
-            }
+          }
+          return;
+        }
 
-            const portsHtml = filteredPorts.map(port => {
-                const isCommon = ['3000', '3001', '8080', '8000', '5000', '4200'].includes(port.port);
-                return `
+        const portsHtml = filteredPorts
+          .map((port) => {
+            const isCommon = [
+              "3000",
+              "3001",
+              "8080",
+              "8000",
+              "5000",
+              "4200",
+            ].includes(port.port);
+            return `
                     <div class="port-item" data-pid="${port.pid}">
-                        <div class="port-info" onclick="copyPort('${port.port}')">
+                        <div class="port-info" onclick="copyPort('${
+                          port.port
+                        }')">
                             <div class="port-number">
                                 ${port.address}
-                                ${isCommon ? '<span class="port-badge">Common</span>' : ''}
+                                ${
+                                  isCommon
+                                    ? '<span class="port-badge">Common</span>'
+                                    : ""
+                                }
                             </div>
                             <div class="process-name">${port.process}</div>
                             <div class="pid">PID: ${port.pid}</div>
@@ -539,74 +579,106 @@
                                 🌐
                             </button>
                             <button class="kill-btn" 
-                                    onclick="killPort('${port.pid}', '${port.port}')">
+                                    onclick="killPort('${port.pid}', '${
+              port.port
+            }')">
                                 Завершить
                             </button>
                         </div>
                     </div>
                 `;
-            }).join('');
+          })
+          .join("");
 
-            contentDiv.innerHTML = `<div class="ports-container">${portsHtml}</div>`;
+        contentDiv.innerHTML = `<div class="ports-container">${portsHtml}</div>`;
+      }
+
+      async function killPort(pid, port) {
+        if (!confirm(`Завершить процесс на порту ${port}?`)) {
+          return;
         }
 
-        async function killPort(pid, port) {
-            if (!confirm(`Завершить процесс на порту ${port}?`)) {
-                return;
+        try {
+          const result = await ipcRenderer.invoke("kill-process", pid);
+
+          if (result.success) {
+            showStatus(`Процесс на порту ${port} успешно завершен`);
+
+            // Анимация удаления
+            const item = document.querySelector(`[data-pid="${pid}"]`);
+            if (item) {
+              item.style.opacity = "0";
+              item.style.transform = "translateX(-100%)";
+              setTimeout(() => {
+                loadPorts();
+              }, 300);
             }
-
-            try {
-                const result = await ipcRenderer.invoke('kill-process', pid);
-                
-                if (result.success) {
-                    showStatus(`Процесс на порту ${port} успешно завершен`);
-                    
-                    // Анимация удаления
-                    const item = document.querySelector(`[data-pid="${pid}"]`);
-                    if (item) {
-                        item.style.opacity = '0';
-                        item.style.transform = 'translateX(-100%)';
-                        setTimeout(() => {
-                            loadPorts();
-                        }, 300);
-                    }
-                } else {
-                    showStatus(`Ошибка при завершении процесса: ${result.error}`, true);
-                }
-            } catch (error) {
-                console.error('Error killing process:', error);
-                showStatus('Ошибка при завершении процесса', true);
-            }
+          } else {
+            showStatus(`Ошибка при завершении процесса: ${result.error}`, true);
+          }
+        } catch (error) {
+          console.error("Error killing process:", error);
+          showStatus("Ошибка при завершении процесса", true);
         }
+      }
 
-        function refreshPorts() {
-            loadPorts();
-            showStatus('Список портов обновлен');
-        }
-
-        function showStatus(message, isError = false) {
-            const statusDiv = document.getElementById('status');
-            statusDiv.textContent = message;
-            statusDiv.className = `status show ${isError ? 'error' : ''}`;
-            
-            setTimeout(() => {
-                statusDiv.classList.remove('show');
-            }, 3000);
-        }
-
-        function quitApp() {
-            if (confirm('Вы уверены, что хотите выйти из Port Manager?')) {
-                ipcRenderer.send('quit-app');
-            }
-        }
-
-        // Загружаем порты при старте
+      function refreshPorts() {
         loadPorts();
+        showStatus("Список портов обновлен");
+      }
 
-        // Обновляем при получении сигнала от main процесса
-        ipcRenderer.on('refresh-ports', () => {
-            loadPorts();
-        });
+      function showStatus(message, isError = false) {
+        const statusDiv = document.getElementById("status");
+        statusDiv.textContent = message;
+        statusDiv.className = `status show ${isError ? "error" : ""}`;
+
+        setTimeout(() => {
+          statusDiv.classList.remove("show");
+        }, 3000);
+      }
+
+      function quitApp() {
+        if (confirm("Вы уверены, что хотите выйти из Port Manager?")) {
+          ipcRenderer.send("quit-app");
+        }
+      }
+
+      function copyPort(port) {
+        ipcRenderer.invoke("copy-to-clipboard", port);
+        showStatus(`Порт ${port} скопирован в буфер`);
+      }
+
+      function openInBrowser(port) {
+        ipcRenderer.invoke("open-in-browser", port);
+        showStatus(`Открыт http://localhost:${port}`, "info");
+      }
+
+      function toggleAutoRefresh() {
+        autoRefresh = !autoRefresh;
+        const btn = document.getElementById("autoRefreshBtn");
+        btn.textContent = autoRefresh ? "⏸" : "▶";
+
+        if (autoRefresh) {
+          autoRefreshInterval = setInterval(loadPorts, 5000);
+          showStatus("Автообновление включено", "info");
+        } else {
+          clearInterval(autoRefreshInterval);
+          showStatus("Автообновление выключено", "info");
+        }
+      }
+
+      // Прячем окно при клике вне него
+      window.addEventListener("blur", () => {
+        ipcRenderer.send("hide-window");
+      });
+
+      // Загружаем порты при старте
+      loadPorts();
+
+      // Обновляем при получении сигнала от main процесса
+      ipcRenderer.on("refresh-ports", () => {
+        loadPorts();
+      });
     </script>
-</body>
+  </body>
 </html>
