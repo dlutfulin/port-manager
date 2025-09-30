@@ -179,7 +179,7 @@ mb.on('ready', () => {
       }
       
       mb.window.setPosition(x, y, false);
-      mb.window.webContents.send('refresh-ports');
+      // mb.window.webContents.send('refresh-ports');
       
       // Фокусируемся на окне
       mb.window.focus();
